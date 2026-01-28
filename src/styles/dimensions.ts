@@ -1,1 +1,25 @@
-export const Dimensions = {};
+export const Dimensions = {
+  pageMaxWidth: "1320px",
+  cardRadius: "20px",
+  panelRadius: "16px",
+  fieldRadius: "12px",
+  fieldPadding: "12px",
+  borderThin: "1px",
+  focusRing: "3px",
+  sectionGap: "24px",
+  cardShadow: "0 24px 60px -40px",
+  inputShadow: "0 12px 22px -16px",
+  pageGlowPrimary: "900px 420px",
+  pageGlowSecondary: "760px 360px",
+  pagePadding: "32px 24px 56px",
+  cardPadding: "28px",
+  headerGap: "24px",
+  headerPaddingBottom: "18px",
+  totalBlockGap: "6px",
+  controlPadding: "20px",
+  gridGap: "16px",
+  gridMinColumn: "190px",
+  inputGap: "6px",
+  inputLabelGap: "6px",
+  visualizerGap: "12px"
+};

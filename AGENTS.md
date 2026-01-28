@@ -33,7 +33,7 @@
 ## Scripts
 
 - `npm i` installs dependencies.
-- `npm start` starts serving the project using Vite (entry point is `index.html` and `index.ts`).
+- `npm start` starts serving the project using Vite (entry point is `index.html` and `src/index.tsx`).
 - `npm run build` builds the project, putting the static assets, JS, and HTML in the `build` folder.
 
 ## Coding style
@@ -62,8 +62,10 @@
 - `typography.ts` in the `Typography` object has the names of reusable text styles as key, and its values have the typeface and dimensions of said reusable styles. They must satisfy the appropriate typings for `@vanilla-extract/css`, and must be spreadable into a style object.
 - `dimensions.ts` has the reusable dimensions as key value pairs.
 - `palette` has the full color palette that any theme might use. Colors here are named independently from which theme will use them, and logically according to what the color actually is.
-- `themeContract.ts` is the contract defining what the themes must satisfy. Each entry here must define the colors of a component, with component terminology appropriate names.
-- `lightTheme.ts` and `darkTheme.ts` define the appropriate theme, and satisfy themeContract. This should be expressed in typings too. Both theme files reuse the colors defined in `palette.ts`
+- `themeContract.css.ts` is the contract defining what the themes must satisfy. Each entry here must define the colors of a component, with component terminology appropriate names.
+- `lightTheme.css.ts` and `darkTheme.css.ts` define the appropriate theme, and satisfy themeContract. This should be expressed in typings too. Both theme files reuse the colors defined in `palette.ts`.
+- Vanilla Extract rules: `createThemeContract` and `createTheme` must be declared in `.css.ts` files so styles can be associated with a file scope.
+- **No ad-hoc styling:** Do not introduce raw color values or repeated pixel sizes directly in component styles. Add new colors to `palette.ts`, route them through `themeContract.css.ts`, and consume them via themes. Add reusable sizes to `dimensions.ts` and use those constants. Typography sizing/weight must live in `typography.ts` and be spread into styles; avoid overriding font sizes in component styles.
 
 ### Common types
 

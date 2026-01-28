@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "jotai";
 
 import { App } from "./App";
+import "./styles/globalStyles.css.ts";
+import "./utils/i18n";
 
 const rootElement = document.getElementById("root");
 
