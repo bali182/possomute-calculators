@@ -13,6 +13,7 @@ export const panel = style({
   padding: Dimensions.cardPadding,
   flex: 1,
   minHeight: 0,
+  alignSelf: "stretch",
   display: "flex",
   flexDirection: "column",
   gap: Dimensions.headerStackGap,

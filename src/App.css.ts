@@ -24,6 +24,7 @@ export const app = style({
 export const layout = style({
   margin: "0 auto",
   maxWidth: Dimensions.pageMaxWidth,
+  width: "100%",
   display: "flex",
   flexDirection: "column",
   gap: Dimensions.sectionGap,
@@ -35,5 +36,6 @@ export const content = style({
   flex: 1,
   minHeight: 0,
   display: "flex",
-  flexDirection: "column"
+  flexDirection: "column",
+  width: "100%"
 });

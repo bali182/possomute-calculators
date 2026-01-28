@@ -26,14 +26,18 @@ export const StrapVisualizer: FC<StrapVisualizerProps> = ({ data, inputs }) => {
   const stitchPath = generateStitches(data.totalLength, inputs.strapWidth);
 
   return (
-    <div className={`${styles.frame} ${styles.gridArea}`} id="printable-area">
-      <svg
-        className={styles.svg}
-        width={`${vbWidth}mm`}
-        height={`${vbHeight}mm`}
-        viewBox={`0 0 ${vbWidth} ${vbHeight}`}
-        xmlns="http://www.w3.org/2000/svg"
+    <div className={styles.frame} id="printable-area">
+      <div
+        className={styles.gridArea}
+        style={{ width: `${vbWidth}mm`, height: `${vbHeight}mm` }}
       >
+        <svg
+          className={styles.svg}
+          width={`${vbWidth}mm`}
+          height={`${vbHeight}mm`}
+          viewBox={`0 0 ${vbWidth} ${vbHeight}`}
+          xmlns="http://www.w3.org/2000/svg"
+        >
         <defs>
           <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="2" height="2">
             <path
@@ -445,7 +449,8 @@ export const StrapVisualizer: FC<StrapVisualizerProps> = ({ data, inputs }) => {
         <text x={padX} y={vbHeight - 5} style={{ fontSize: "4px", fill: ThemeContract.colors.text.muted }}>
           {t("svg.gridSize")}
         </text>
-      </svg>
+        </svg>
+      </div>
     </div>
   );
 };

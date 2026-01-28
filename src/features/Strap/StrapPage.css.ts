@@ -95,6 +95,6 @@ export const controls = style({
 
 export const controlsGrid = style({
   display: "grid",
-  gridTemplateColumns: `repeat(auto-fit, minmax(${Dimensions.gridMinColumn}, 1fr))`,
+  gridTemplateColumns: "1fr",
   gap: Dimensions.gridGap
 });

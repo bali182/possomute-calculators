@@ -16,6 +16,7 @@ export const frame = style({
 });
 
 export const gridArea = style({
+  display: "block",
   backgroundSize: "10mm 10mm",
   backgroundImage: `linear-gradient(to right, ${ThemeContract.colors.svg.grid} ${Dimensions.borderThin}, transparent ${Dimensions.borderThin}), linear-gradient(to bottom, ${ThemeContract.colors.svg.grid} ${Dimensions.borderThin}, transparent ${Dimensions.borderThin})`
 });
