@@ -1,6 +1,7 @@
 # Possomute calculators
 
 ## Purpose
+
 - This project helps calculate the dimensions of the materials used in a product called Possomute.
 - Possomute is a tool that helps mute bass guitar strings at the bridge.
 - **Structure:**
@@ -17,6 +18,7 @@
 - It also helps visualize the parts using SVG graphics.
 
 ## Technologies
+
 - This is a pure browser-based frontend project.
 - `npm` is used for managing dependencies.
 - `vite` is used for building the project.
@@ -29,14 +31,18 @@
 - Using or suggesting Tailwind for styling is strictly forbidden.
 
 ## Scripts
+
 - `npm i` installs dependencies.
 - `npm start` starts serving the project using Vite (entry point is `index.html` and `index.ts`).
 - `npm run build` builds the project, putting the static assets, JS, and HTML in the `build` folder.
 
 ## Coding style
+
 - Source code lives in the `src` folder.
 - Shared types live under the `src/model` folder.
 - Shared utilities/hooks live in the `src/utils` folder.
+- Locales live under the `src/locales` folder. When UI text is added, it should be added here too under each language.
+- Theming/styling lives under the styles folder.
 - Shared UI components (used by multiple features) live in `src/components`.
 - **Features & Routing:**
   - Distinct functional areas (e.g., Strap, Wood Frame, Foam) live under `src/features` in folders with the appropriate name.
@@ -51,11 +57,21 @@
   - Type declarations always use type-aliases (`type SomeType = ...`), never interfaces.
   - Comments (`// ...` and `/* ... */`) should be used sparingly, explaining only less trivial code.
 
+### Theming and styling
+- Theming lives under the `src/styles` folder.
+- `typography.ts` in the `Typography` object has the names of reusable text styles as key, and its values have the typeface and dimensions of said reusable styles. They must satisfy the appropriate typings for `@vanilla-extract/css`, and must be spreadable into a style object.
+- `dimensions.ts` has the reusable dimensions as key value pairs.
+- `palette` has the full color palette that any theme might use. Colors here are named independently from which theme will use them, and logically according to what the color actually is.
+- `themeContract.ts` is the contract defining what the themes must satisfy. Each entry here must define the colors of a component, with component terminology appropriate names.
+- `lightTheme.ts` and `darkTheme.ts` define the appropriate theme, and satisfy themeContract. This should be expressed in typings too. Both theme files reuse the colors defined in `palette.ts`
+
 ### Common types
+
 - Common model types live in the `src/model/types.ts` file for now.
 - Additional types can be added if more common types are needed.
 
 ### React components
+
 - React components use `PascalCase` naming.
 - If they have props, the props type is always declared before the component itself and named: `MyComponent` => `MyComponentProps`.
 - The components are always an arrow function typed `FC`, with the appropriate props type.
@@ -67,9 +83,10 @@
   4. Callbacks.
   5. Effects.
   6. Return the rendered element.
-  - *Note:* This rule can be broken if dependency requirements between hooks/value computations dictate it.
+  - _Note:_ This rule can be broken if dependency requirements between hooks/value computations dictate it.
 
 ### Hooks
+
 - Hooks are functions using `camelCase` naming and always start with the `use` prefix (e.g., `useSomething`).
 - They are always `function` declarations, never arrow functions.
 - If they have more than 2 inputs, define the input in an object type: `useSomething` => `type UseSomethingInput = {...}`.
@@ -77,6 +94,7 @@
 - They can have internally used helper functions in the same file (without exports) if convenient.
 
 ### Utility functions
+
 - Utility functions use `camelCase`.
 - They are always `function` declarations, never arrow functions.
 - They must always clearly define their input type(s) and return types.
