@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leather Strap Master Template</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+
+    <style>
+      body {
+        background-color: #f3f4f6;
+        font-family: sans-serif;
+      }
+      .mm-grid {
+        background-size: 10mm 10mm;
+        background-image:
+          linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+          linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+      }
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #printable-area,
+        #printable-area * {
+          visibility: visible;
+        }
+        #printable-area {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useMemo } = React;
+
+      function App() {
+        // -- Inputs --
+        const [thickness, setThickness] = useState(1.5);
+        const [liningThick, setLiningThick] = useState(0.5);
+        const [strapWidth, setStrapWidth] = useState(30);
+
+        const [boxLen, setBoxLen] = useState(105);
+        const [boxHeight, setBoxHeight] = useState(25);
+        const [woodThick, setWoodThick] = useState(5);
+
+        const [magDiam, setMagDiam] = useState(12);
+        const [magGap, setMagGap] = useState(2);
+        const [stiffGap, setStiffGap] = useState(3);
+
+        // -- Logic --
+        const data = useMemo(() => {
+          const PI = Math.PI;
+          const cornerStd = (PI * thickness) / 4;
+
+          // FAT TURN LOGIC:
+          // Inner Object being wrapped = Start of Strap (Leather + Lining)
+          // Radius of Inner Object = thickness + liningThick
+          // Neutral Axis of Outer Strap = Radius + 0.5 * thickness
+          const rMainFat = thickness + liningThick + 0.5 * thickness;
+          const cornerFat = (PI * rMainFat) / 2;
+
+          const magRad = magDiam / 2;
+
+          // Segments
+          const segments = [
+            {
+              id: 1,
+              label: "Left (In)",
+              len: parseFloat(boxHeight),
+              type: "flat",
+            },
+            { id: 2, label: "C1", len: cornerStd, type: "corner" },
+            { id: 3, label: "Bottom", len: parseFloat(boxLen), type: "flat" },
+            { id: 4, label: "C2", len: cornerStd, type: "corner" },
+            { id: 5, label: "Right", len: parseFloat(boxHeight), type: "flat" },
+            { id: 6, label: "C3", len: cornerStd, type: "corner" },
+            {
+              id: 7,
+              label: "Top/Hollow",
+              len: parseFloat(boxLen),
+              type: "flat",
+            },
+            { id: 8, label: "Fat Turn", len: cornerFat, type: "corner-fat" },
+            {
+              id: 9,
+              label: "Overlap",
+              len: parseFloat(boxHeight),
+              type: "flat-end",
+            },
+          ];
+
+          let currentX = 0;
+          const segmentsWithPos = segments.map((seg) => {
+            const item = { ...seg, startX: currentX, endX: currentX + seg.len };
+            currentX += seg.len;
+            return item;
+          });
+          const totalLength = currentX;
+
+          // Magnet Positioning
+          const distFromBottom =
+            parseFloat(woodThick) + parseFloat(magGap) + magRad;
+          const distFromTop = boxHeight - distFromBottom;
+
+          const hole1Abs = distFromTop;
+          const seg9Start = segmentsWithPos[8].startX;
+          const hole2Abs = seg9Start + distFromTop;
+
+          const punchDist1 = hole1Abs - magRad;
+          const punchDist2 = totalLength - (hole2Abs + magRad);
+
+          // --- STIFFENER CALCULATION ---
+          const segTop = segmentsWithPos[6];
+          const stiffLen = boxLen - 2 * woodThick - 2 * stiffGap;
+          const stiffOffset = parseFloat(woodThick) + parseFloat(stiffGap);
+          const stiffX = segTop.startX + stiffOffset;
+          const stiffXEnd = stiffX + stiffLen;
+
+          // --- LINING CALCULATION ---
+          // Lining wraps the same path but on the inside radius.
+          // Neutral Axis of Lining at Corner = thickness (of inner wood/strap) + 0.5*liningThick
+          const rLiningFat = thickness + 0.5 * liningThick;
+          const liningCornerLen = (PI * rLiningFat) / 2;
+
+          const liningTotalLen =
+            parseFloat(boxLen) + liningCornerLen + parseFloat(boxHeight);
+          const linStartX = segTop.startX;
+          const linEndX = totalLength;
+          const linDistFromStart = linStartX;
+
+          return {
+            segments: segmentsWithPos,
+            totalLength,
+            hole1: { x: hole1Abs, r: magRad },
+            hole2: { x: hole2Abs, r: magRad },
+            magCenterYFromTop: distFromTop,
+            punchDist1,
+            punchDist2,
+            stiffener: {
+              len: stiffLen > 0 ? stiffLen : 0,
+              x: stiffX,
+              endX: stiffXEnd,
+              offset: stiffOffset,
+              distFromStart: stiffX,
+              distFromEnd: totalLength - stiffXEnd,
+            },
+            lining: {
+              len: liningTotalLen,
+              startX: linStartX,
+              endX: linEndX,
+              distFromStart: linDistFromStart,
+            },
+          };
+        }, [
+          thickness,
+          liningThick,
+          strapWidth,
+          boxLen,
+          boxHeight,
+          woodThick,
+          magDiam,
+          magGap,
+          stiffGap,
+        ]);
+
+        // -- SVG Helpers --
+        const padY = 50;
+        const padX = 10;
+        const vbWidth = data.totalLength + padX * 2;
+        const strapZoneHeight = strapWidth + padY * 2;
+        const woodZoneHeight = boxHeight + 40;
+        const vbHeight = strapZoneHeight + woodZoneHeight;
+
+        const generateOutline = () => {
+          const h = strapWidth;
+          const r = h / 2;
+          const L = data.totalLength;
+          return `M 0,0 L ${L - r},0 A ${r},${r} 0 0,1 ${L - r},${h} L 0,${h} Z`;
+        };
+
+        const generateStitches = () => {
+          const inset = 4;
+          const h = strapWidth;
+          const r = h / 2 - inset;
+          const L = data.totalLength;
+          if (r <= 0) return "";
+          const arcCenterX = L - h / 2;
+          return `M ${inset},${inset} L ${arcCenterX},${inset} A ${r},${r} 0 0,1 ${arcCenterX},${h - inset} L ${inset},${h - inset} L ${inset},${inset}`;
+        };
+
+        const generateWoodProfile = () => {
+          const H = parseFloat(boxHeight);
+          const L = parseFloat(boxLen);
+          const T = parseFloat(woodThick);
+          return (
+            <g stroke="black" strokeWidth="0.5" fill="#DEB887">
+              <path
+                d={`M 0,0 L ${T},0 L ${T},${H - T} L 0,${H} Z`}
+                fill="#D2B48C"
+              />
+              <path
+                d={`M 0,${H} L ${L},${H} L ${L - T},${H - T} L ${T},${H - T} Z`}
+                fill="#C19A6B"
+              />
+              <path
+                d={`M ${L},${H} L ${L},0 L ${L - T},0 L ${L - T},${H - T} Z`}
+                fill="#D2B48C"
+              />
+              <line x1="0" y1={H} x2={T} y2={H - T} stroke="rgba(0,0,0,0.3)" />
+              <line
+                x1={L}
+                y1={H}
+                x2={L - T}
+                y2={H - T}
+                stroke="rgba(0,0,0,0.3)"
+              />
+            </g>
+          );
+        };
+
+        return (
+          <div className="max-w-screen-2xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-6 border-b pb-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  Leather Strap Master Template
+                </h1>
+              </div>
+              <div className="text-right mt-4 md:mt-0">
+                <div className="text-3xl font-mono text-blue-600 font-bold">
+                  {data.totalLength.toFixed(1)} mm
+                </div>
+                <div className="text-xs text-gray-400 uppercase tracking-wide">
+                  Total Cut Length
+                </div>
+              </div>
+            </div>
+
+            {/* Controls Grid - 2 rows */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8 bg-gray-50 p-6 rounded-lg border border-gray-100">
+              {/* Row 1 */}
+              <InputGroup
+                label="Leather Thickness"
+                val={thickness}
+                set={setThickness}
+                step={0.1}
+              />
+              <InputGroup
+                label="Lining Thickness"
+                val={liningThick}
+                set={setLiningThick}
+                step={0.1}
+              />
+              <InputGroup
+                label="Strap Width"
+                val={strapWidth}
+                set={setStrapWidth}
+                step={1}
+              />
+              <InputGroup
+                label="Box Length (Bottom)"
+                val={boxLen}
+                set={setBoxLen}
+                step={1}
+              />
+              <InputGroup
+                label="Box Height (Side)"
+                val={boxHeight}
+                set={setBoxHeight}
+                step={1}
+              />
+
+              {/* Row 2 */}
+              <InputGroup
+                label="Wood Thickness"
+                val={woodThick}
+                set={setWoodThick}
+                step={0.5}
+              />
+              <InputGroup
+                label="Magnet Diameter"
+                val={magDiam}
+                set={setMagDiam}
+                step={1}
+              />
+              <InputGroup
+                label="Magnet Gap from Floor"
+                val={magGap}
+                set={setMagGap}
+                step={0.5}
+              />
+              <InputGroup
+                label="Stiffener Gap from Wall"
+                val={stiffGap}
+                set={setStiffGap}
+                step={0.5}
+              />
+            </div>
+
+            {/* Visualizer */}
+            <div
+              className="border border-gray-300 rounded bg-white shadow-inner mm-grid overflow-x-auto"
+              id="printable-area"
+            >
+              <svg
+                width={`${vbWidth}mm`}
+                height={`${vbHeight}mm`}
+                viewBox={`0 0 ${vbWidth} ${vbHeight}`}
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ display: "block" }}
+              >
+                <defs>
+                  <pattern
+                    id="diagonalHatch"
+                    patternUnits="userSpaceOnUse"
+                    width="2"
+                    height="2"
+                  >
+                    <path
+                      d="M-1,1 l2,-2 M0,2 l2,-2 M1,3 l2,-2"
+                      stroke="#000"
+                      strokeWidth="0.2"
+                      opacity="0.3"
+                    />
+                  </pattern>
+                  {/* Markers */}
+                  <marker
+                    id="arrowBlue"
+                    markerWidth="6"
+                    markerHeight="6"
+                    refX="5"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L0,6 L6,3 z" fill="#2563eb" />
+                  </marker>
+                  <marker
+                    id="arrowBlueReverse"
+                    markerWidth="6"
+                    markerHeight="6"
+                    refX="1"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M6,0 L6,6 L0,3 z" fill="#2563eb" />
+                  </marker>
+                  <marker
+                    id="tickBlue"
+                    markerWidth="2"
+                    markerHeight="6"
+                    refX="1"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <rect x="0" y="0" width="1" height="6" fill="#2563eb" />
+                  </marker>
+                  <marker
+                    id="arrowRed"
+                    markerWidth="6"
+                    markerHeight="6"
+                    refX="5"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L0,6 L6,3 z" fill="#ea580c" />
+                  </marker>
+                  <marker
+                    id="arrowRedReverse"
+                    markerWidth="6"
+                    markerHeight="6"
+                    refX="1"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M6,0 L6,6 L0,3 z" fill="#ea580c" />
+                  </marker>
+                  <marker
+                    id="tickRed"
+                    markerWidth="2"
+                    markerHeight="6"
+                    refX="1"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <rect x="0" y="0" width="1" height="6" fill="#ea580c" />
+                  </marker>
+                  <marker
+                    id="arrowCyan"
+                    markerWidth="6"
+                    markerHeight="6"
+                    refX="5"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L0,6 L6,3 z" fill="#06b6d4" />
+                  </marker>
+                  <marker
+                    id="tickCyan"
+                    markerWidth="2"
+                    markerHeight="6"
+                    refX="1"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <rect x="0" y="0" width="1" height="6" fill="#06b6d4" />
+                  </marker>
+                </defs>
+
+                {/* --- STRAP --- */}
+                <g transform={`translate(${padX}, ${padY})`}>
+                  {/* Lining Layer Underneath */}
+                  <rect
+                    x={data.lining.startX}
+                    y={0}
+                    width={data.lining.endX - data.lining.startX}
+                    height={strapWidth}
+                    fill="none"
+                    stroke="#06b6d4"
+                    strokeWidth="1"
+                    strokeDasharray="4 2"
+                    opacity="0.3"
+                  />
+                  {/* Solid leather shape */}
+                  <path
+                    d={generateOutline()}
+                    fill="#8B4513"
+                    fillOpacity="0.9"
+                  />
+
+                  {/* STIFFENER */}
+                  {data.stiffener.len > 0 && (
+                    <g>
+                      <rect
+                        x={data.stiffener.x}
+                        y={(strapWidth - (strapWidth - 8)) / 2}
+                        width={data.stiffener.len}
+                        height={strapWidth - 8}
+                        fill="url(#diagonalHatch)"
+                        stroke="#4b5563"
+                        strokeWidth="0.3"
+                        strokeDasharray="2 1"
+                      />
+                      <text
+                        x={data.stiffener.x + data.stiffener.len / 2}
+                        y={strapWidth / 2 + 1}
+                        textAnchor="middle"
+                        fontSize="3"
+                        fill="#000"
+                        fontWeight="bold"
+                        style={{ textShadow: "0px 0px 2px white" }}
+                      >
+                        Stiffener: {data.stiffener.len.toFixed(1)} mm
+                      </text>
+                    </g>
+                  )}
+
+                  <path
+                    d={generateStitches()}
+                    fill="none"
+                    stroke="#F5F5DC"
+                    strokeWidth="0.6"
+                    strokeDasharray="4 1.5"
+                    strokeLinecap="round"
+                  />
+
+                  {/* HOLES */}
+                  <circle
+                    cx={data.hole1.x}
+                    cy={strapWidth / 2}
+                    r={data.hole1.r}
+                    fill="#1f2937"
+                  />
+                  <circle
+                    cx={data.hole2.x}
+                    cy={strapWidth / 2}
+                    r={data.hole2.r}
+                    fill="#1f2937"
+                  />
+
+                  {/* === DIMENSIONS === */}
+
+                  {/* 1. Stiffener Guides (Top Level 1: y=-18) */}
+                  {data.stiffener.len > 0 && (
+                    <g>
+                      <line
+                        x1={0}
+                        y1={-18}
+                        x2={data.stiffener.x}
+                        y2={-18}
+                        stroke="#ea580c"
+                        strokeWidth="0.5"
+                        markerStart="url(#tickRed)"
+                        markerEnd="url(#arrowRed)"
+                      />
+                      <text
+                        x={data.stiffener.x / 2}
+                        y={-20}
+                        fontSize="3"
+                        fill="#ea580c"
+                        textAnchor="middle"
+                      >
+                        Strap Start to Stiffener:{" "}
+                        {data.stiffener.distFromStart.toFixed(1)} mm
+                      </text>
+                      <line
+                        x1={data.stiffener.x}
+                        y1={-18}
+                        x2={data.stiffener.x}
+                        y2={5}
+                        stroke="#ea580c"
+                        strokeWidth="0.2"
+                        strokeDasharray="1 1"
+                      />
+
+                      <line
+                        x1={data.stiffener.endX}
+                        y1={-18}
+                        x2={data.totalLength}
+                        y2={-18}
+                        stroke="#ea580c"
+                        strokeWidth="0.5"
+                        markerStart="url(#arrowRedReverse)"
+                        markerEnd="url(#tickRed)"
+                      />
+                      <text
+                        x={data.stiffener.endX + data.stiffener.distFromEnd / 2}
+                        y={-20}
+                        fontSize="3"
+                        fill="#ea580c"
+                        textAnchor="middle"
+                      >
+                        End to Stiffener:{" "}
+                        {data.stiffener.distFromEnd.toFixed(1)} mm
+                      </text>
+                      <line
+                        x1={data.stiffener.endX}
+                        y1={-18}
+                        x2={data.stiffener.endX}
+                        y2={5}
+                        stroke="#ea580c"
+                        strokeWidth="0.2"
+                        strokeDasharray="1 1"
+                      />
+                    </g>
+                  )}
+
+                  {/* 2. Lining Guides (Top Level 2: y=-28) */}
+                  <g>
+                    <line
+                      x1={0}
+                      y1={-28}
+                      x2={data.lining.startX}
+                      y2={-28}
+                      stroke="#06b6d4"
+                      strokeWidth="0.5"
+                      markerStart="url(#tickCyan)"
+                      markerEnd="url(#arrowCyan)"
+                    />
+                    <text
+                      x={data.lining.startX / 2}
+                      y={-30}
+                      fontSize="3"
+                      fill="#06b6d4"
+                      textAnchor="middle"
+                    >
+                      Start to Lining: {data.lining.distFromStart.toFixed(1)} mm
+                    </text>
+                    <line
+                      x1={data.lining.startX}
+                      y1={-28}
+                      x2={data.lining.startX}
+                      y2={strapWidth}
+                      stroke="#06b6d4"
+                      strokeWidth="0.4"
+                      strokeDasharray="4 2"
+                    />
+
+                    {/* Lining Length Label */}
+                    <text
+                      x={data.lining.startX + data.lining.len / 2}
+                      y={-30}
+                      fontSize="3"
+                      fill="#06b6d4"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      Lining Cut Length: {data.lining.len.toFixed(1)} mm
+                    </text>
+                  </g>
+
+                  {/* 3. Punch Guides (Bottom: y=-8) */}
+                  <g>
+                    <line
+                      x1={0}
+                      y1={-8}
+                      x2={data.hole1.x - data.hole1.r}
+                      y2={-8}
+                      stroke="#2563eb"
+                      strokeWidth="0.5"
+                      markerEnd="url(#arrowBlue)"
+                      markerStart="url(#tickBlue)"
+                    />
+                    <text
+                      x={(data.hole1.x - data.hole1.r) / 2}
+                      y={-10}
+                      fontSize="3.5"
+                      fill="#2563eb"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      {data.punchDist1.toFixed(1)} mm
+                    </text>
+                    <line
+                      x1={data.hole1.x - data.hole1.r}
+                      y1={-10}
+                      x2={data.hole1.x - data.hole1.r}
+                      y2={strapWidth / 2}
+                      stroke="#2563eb"
+                      strokeWidth="0.2"
+                      strokeDasharray="1 1"
+                    />
+                  </g>
+                  <g>
+                    <line
+                      x1={data.hole2.x + data.hole2.r}
+                      y1={-8}
+                      x2={data.totalLength}
+                      y2={-8}
+                      stroke="#2563eb"
+                      strokeWidth="0.5"
+                      markerStart="url(#arrowBlueReverse)"
+                      markerEnd="url(#tickBlue)"
+                    />
+                    <text
+                      x={data.hole2.x + data.hole2.r + data.punchDist2 / 2}
+                      y={-10}
+                      fontSize="3.5"
+                      fill="#2563eb"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      {data.punchDist2.toFixed(1)} mm
+                    </text>
+                    <line
+                      x1={data.hole2.x + data.hole2.r}
+                      y1={-10}
+                      x2={data.hole2.x + data.hole2.r}
+                      y2={strapWidth / 2}
+                      stroke="#2563eb"
+                      strokeWidth="0.2"
+                      strokeDasharray="1 1"
+                    />
+                  </g>
+
+                  {/* Segment Labels */}
+                  {data.segments.map((seg, i) => {
+                    const centerX = seg.startX + seg.len / 2;
+                    const labelY =
+                      i % 2 === 0 ? strapWidth + 8 : strapWidth + 14;
+                    return (
+                      <g key={seg.id}>
+                        {i > 0 && (
+                          <line
+                            x1={seg.startX}
+                            y1={0}
+                            x2={seg.startX}
+                            y2={strapWidth}
+                            stroke="rgba(255,255,255,0.4)"
+                            strokeWidth="0.5"
+                            strokeDasharray="1 1"
+                          />
+                        )}
+                        <text
+                          x={centerX}
+                          y={labelY}
+                          textAnchor="middle"
+                          style={{
+                            fontSize: "3px",
+                            fill: "#4b5563",
+                            fontFamily: "monospace",
+                          }}
+                        >
+                          {seg.label}
+                        </text>
+                        <text
+                          x={centerX}
+                          y={labelY + 3}
+                          textAnchor="middle"
+                          style={{
+                            fontSize: "3px",
+                            fill: "#000",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {seg.len.toFixed(1)} mm
+                        </text>
+                      </g>
+                    );
+                  })}
+                </g>
+
+                {/* --- SCHEMATICS --- */}
+                <g transform={`translate(${padX}, ${strapZoneHeight + 10})`}>
+                  <text x="0" y="-5" fontSize="4" fontWeight="bold" fill="#333">
+                    Wood Profile
+                  </text>
+                  {generateWoodProfile()}
+                  <circle
+                    cx={woodThick / 2}
+                    cy={data.magCenterYFromTop}
+                    r={magDiam / 2}
+                    fill="rgba(50, 50, 200, 0.3)"
+                    stroke="blue"
+                    strokeWidth="0.2"
+                  />
+                  <text
+                    x={woodThick + 11}
+                    y={data.magCenterYFromTop + 1}
+                    fontSize="3"
+                    fill="blue"
+                  >
+                    Magnet Center
+                  </text>
+                  <line
+                    x1={woodThick / 2}
+                    y1={boxHeight - woodThick}
+                    x2={woodThick / 2}
+                    y2={boxHeight - woodThick - magGap}
+                    stroke="red"
+                    strokeWidth="0.6"
+                  />
+                  <text
+                    x={woodThick / 2 + 2}
+                    y={boxHeight - woodThick - magGap / 2 + 1}
+                    fontSize="3"
+                    fill="red"
+                    fontWeight="bold"
+                  >
+                    {magGap} mm Gap
+                  </text>
+                </g>
+
+                <text
+                  x={padX}
+                  y={vbHeight - 5}
+                  style={{ fontSize: "4px", fill: "#999" }}
+                >
+                  10mm x 10mm
+                </text>
+              </svg>
+            </div>
+          </div>
+        );
+      }
+
+      function InputGroup({ label, val, set, step }) {
+        return (
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-1 mb-1">
+              <label className="text-xs font-bold uppercase text-gray-500">
+                {label}
+              </label>
+              <span className="text-[10px] text-gray-400 font-normal">
+                (mm)
+              </span>
+            </div>
+            <input
+              type="number"
+              value={val}
+              onChange={(e) => set(parseFloat(e.target.value) || 0)}
+              step={step}
+              className="w-full p-2 border border-gray-300 rounded text-sm font-mono focus:ring-2 focus:ring-gray-100 focus:outline-none"
+            />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
