@@ -1,6 +1,13 @@
 {
   "app.title": "Bőr szíj mester sablon",
   "app.totalCutLength": "Teljes vágási hossz",
+  "nav.frame": "Keret",
+  "nav.strap": "Szíj",
+  "nav.foam": "Hab",
+  "placeholder.frameTitle": "Keret kalkulátor",
+  "placeholder.frameBody": "Ez a fül készen áll a keret kalkulátorra.",
+  "placeholder.foamTitle": "Hab kalkulátor",
+  "placeholder.foamBody": "Ez a fül készen áll a hab kalkulátorra.",
   "inputs.leatherThickness": "Bőr vastagság",
   "inputs.liningThickness": "Bélés vastagság",
   "inputs.strapWidth": "Szíj szélesség",

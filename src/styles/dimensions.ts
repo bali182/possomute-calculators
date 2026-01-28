@@ -13,13 +13,20 @@ export const Dimensions = {
   pageGlowSecondary: "760px 360px",
   pagePadding: "32px 24px 56px",
   cardPadding: "28px",
-  headerGap: "24px",
-  headerPaddingBottom: "18px",
+  headerStackGap: "12px",
   totalBlockGap: "6px",
   controlPadding: "20px",
   gridGap: "16px",
   gridMinColumn: "190px",
   inputGap: "6px",
   inputLabelGap: "6px",
-  visualizerGap: "12px"
+  tabsContainerPadding: "6px",
+  tabsGap: "6px",
+  tabPadding: "10px 18px",
+  tabRadius: "999px",
+  tabShadow: "0 8px 18px -14px",
+  splitPanelHeight: "68vh",
+  splitPanelPadding: "20px",
+  splitPanelGap: "18px",
+  splitBreakpoint: "900px"
 };

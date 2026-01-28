@@ -4,40 +4,58 @@ import { Dimensions } from "../../styles/dimensions";
 import { ThemeContract } from "../../styles/themeContract.css";
 import { Typography } from "../../styles/typography";
 
-export const page = style({
-  minHeight: "100vh",
-  padding: Dimensions.pagePadding,
-  backgroundColor: ThemeContract.colors.page.background,
-  backgroundImage:
-    `radial-gradient(${Dimensions.pageGlowPrimary} at 10% -10%, ${ThemeContract.colors.page.glowPrimary}, transparent 70%), radial-gradient(${Dimensions.pageGlowSecondary} at 90% 0%, ${ThemeContract.colors.page.glowSecondary}, transparent 65%)`,
-  color: ThemeContract.colors.text.primary
-});
-
-export const card = style({
-  margin: "0 auto",
-  maxWidth: Dimensions.pageMaxWidth,
+export const panel = style({
   background: ThemeContract.colors.page.surface,
   borderRadius: Dimensions.cardRadius,
-  padding: Dimensions.cardPadding,
   border: `${Dimensions.borderThin} solid ${ThemeContract.colors.page.border}`,
   boxShadow: `${Dimensions.cardShadow} ${ThemeContract.colors.page.cardShadow}`,
+  overflow: "hidden",
+  height: Dimensions.splitPanelHeight
+});
+
+export const split = style({
+  display: "grid",
+  gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)",
+  height: "100%",
+  "@media": {
+    [`screen and (max-width: ${Dimensions.splitBreakpoint})`]: {
+      gridTemplateColumns: "1fr",
+      gridTemplateRows: "minmax(0, 1fr) minmax(0, 1fr)"
+    }
+  }
+});
+
+export const drawArea = style({
+  background: ThemeContract.colors.page.surfaceMuted,
+  padding: Dimensions.splitPanelPadding,
+  overflow: "auto",
+  minHeight: 0
+});
+
+export const configArea = style({
+  padding: Dimensions.splitPanelPadding,
+  overflow: "auto",
+  minHeight: 0,
   display: "flex",
   flexDirection: "column",
-  gap: Dimensions.sectionGap
+  gap: Dimensions.splitPanelGap,
+  borderLeft: `${Dimensions.borderThin} solid ${ThemeContract.colors.page.border}`,
+  "@media": {
+    [`screen and (max-width: ${Dimensions.splitBreakpoint})`]: {
+      borderLeft: "none",
+      borderTop: `${Dimensions.borderThin} solid ${ThemeContract.colors.page.border}`
+    }
+  }
 });
 
 export const header = style({
   display: "flex",
-  justifyContent: "space-between",
-  alignItems: "flex-end",
-  gap: Dimensions.headerGap,
-  borderBottom: `${Dimensions.borderThin} solid ${ThemeContract.colors.page.border}`,
-  paddingBottom: Dimensions.headerPaddingBottom,
-  flexWrap: "wrap"
+  flexDirection: "column",
+  gap: Dimensions.headerStackGap
 });
 
 export const title = style({
-  ...Typography.headingLg,
+  ...Typography.headingMd,
   color: ThemeContract.colors.text.primary,
   margin: 0
 });
@@ -45,7 +63,6 @@ export const title = style({
 export const totalBlock = style({
   display: "flex",
   flexDirection: "column",
-  alignItems: "flex-end",
   gap: Dimensions.totalBlockGap
 });
 
@@ -70,10 +87,4 @@ export const controlsGrid = style({
   display: "grid",
   gridTemplateColumns: `repeat(auto-fit, minmax(${Dimensions.gridMinColumn}, 1fr))`,
   gap: Dimensions.gridGap
-});
-
-export const visualizer = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: Dimensions.visualizerGap
 });

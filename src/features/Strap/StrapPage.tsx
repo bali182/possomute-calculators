@@ -64,100 +64,100 @@ export const StrapPage: FC = () => {
   const mmLabel = t("units.mm");
 
   return (
-    <main className={styles.page}>
-      <section className={styles.card}>
-        <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>{t("app.title")}</h1>
+    <main>
+      <section className={styles.panel}>
+        <div className={styles.split}>
+          <div className={styles.drawArea}>
+            <StrapVisualizer data={data} inputs={inputs} />
           </div>
-          <div className={styles.totalBlock}>
-            <div className={styles.totalValue}>
-              {data.totalLength.toFixed(1)} {mmLabel}
-            </div>
-            <div className={styles.totalLabel}>{t("app.totalCutLength")}</div>
+          <div className={styles.configArea}>
+            <header className={styles.header}>
+              <h1 className={styles.title}>{t("app.title")}</h1>
+              <div className={styles.totalBlock}>
+                <div className={styles.totalValue}>
+                  {data.totalLength.toFixed(1)} {mmLabel}
+                </div>
+                <div className={styles.totalLabel}>{t("app.totalCutLength")}</div>
+              </div>
+            </header>
+            <section className={styles.controls}>
+              <div className={styles.controlsGrid}>
+                <InputGroup
+                  id="leather-thickness"
+                  label={t("inputs.leatherThickness")}
+                  value={thickness}
+                  onChange={setThickness}
+                  step={0.1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="lining-thickness"
+                  label={t("inputs.liningThickness")}
+                  value={liningThickness}
+                  onChange={setLiningThickness}
+                  step={0.1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="strap-width"
+                  label={t("inputs.strapWidth")}
+                  value={strapWidth}
+                  onChange={setStrapWidth}
+                  step={1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="box-length"
+                  label={t("inputs.boxLength")}
+                  value={boxLength}
+                  onChange={setBoxLength}
+                  step={1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="box-height"
+                  label={t("inputs.boxHeight")}
+                  value={boxHeight}
+                  onChange={setBoxHeight}
+                  step={1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="wood-thickness"
+                  label={t("inputs.woodThickness")}
+                  value={woodThickness}
+                  onChange={setWoodThickness}
+                  step={0.5}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="magnet-diameter"
+                  label={t("inputs.magnetDiameter")}
+                  value={magnetDiameter}
+                  onChange={setMagnetDiameter}
+                  step={1}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="magnet-gap"
+                  label={t("inputs.magnetGap")}
+                  value={magnetGap}
+                  onChange={setMagnetGap}
+                  step={0.5}
+                  unitLabel={t("units.mm")}
+                />
+                <InputGroup
+                  id="stiffener-gap"
+                  label={t("inputs.stiffenerGap")}
+                  value={stiffenerGap}
+                  onChange={setStiffenerGap}
+                  step={0.5}
+                  unitLabel={t("units.mm")}
+                />
+              </div>
+            </section>
           </div>
-        </header>
-
-        <section className={styles.controls}>
-          <div className={styles.controlsGrid}>
-            <InputGroup
-              id="leather-thickness"
-              label={t("inputs.leatherThickness")}
-              value={thickness}
-              onChange={setThickness}
-              step={0.1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="lining-thickness"
-              label={t("inputs.liningThickness")}
-              value={liningThickness}
-              onChange={setLiningThickness}
-              step={0.1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="strap-width"
-              label={t("inputs.strapWidth")}
-              value={strapWidth}
-              onChange={setStrapWidth}
-              step={1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="box-length"
-              label={t("inputs.boxLength")}
-              value={boxLength}
-              onChange={setBoxLength}
-              step={1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="box-height"
-              label={t("inputs.boxHeight")}
-              value={boxHeight}
-              onChange={setBoxHeight}
-              step={1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="wood-thickness"
-              label={t("inputs.woodThickness")}
-              value={woodThickness}
-              onChange={setWoodThickness}
-              step={0.5}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="magnet-diameter"
-              label={t("inputs.magnetDiameter")}
-              value={magnetDiameter}
-              onChange={setMagnetDiameter}
-              step={1}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="magnet-gap"
-              label={t("inputs.magnetGap")}
-              value={magnetGap}
-              onChange={setMagnetGap}
-              step={0.5}
-              unitLabel={t("units.mm")}
-            />
-            <InputGroup
-              id="stiffener-gap"
-              label={t("inputs.stiffenerGap")}
-              value={stiffenerGap}
-              onChange={setStiffenerGap}
-              step={0.5}
-              unitLabel={t("units.mm")}
-            />
-          </div>
-        </section>
-
-        <section className={styles.visualizer}>
-          <StrapVisualizer data={data} inputs={inputs} />
-        </section>
+        </div>
       </section>
     </main>
   );

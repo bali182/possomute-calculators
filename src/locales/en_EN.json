@@ -1,6 +1,13 @@
 {
   "app.title": "Leather Strap Master Template",
   "app.totalCutLength": "Total Cut Length",
+  "nav.frame": "Frame",
+  "nav.strap": "Strap",
+  "nav.foam": "Foam",
+  "placeholder.frameTitle": "Frame calculator",
+  "placeholder.frameBody": "This tab is ready for the frame calculator.",
+  "placeholder.foamTitle": "Foam calculator",
+  "placeholder.foamBody": "This tab is ready for the foam calculator.",
   "inputs.leatherThickness": "Leather Thickness",
   "inputs.liningThickness": "Lining Thickness",
   "inputs.strapWidth": "Strap Width",
