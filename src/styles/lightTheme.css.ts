@@ -6,46 +6,46 @@ import { ThemeContract } from "./themeContract.css";
 export const lightThemeClass = createTheme(ThemeContract, {
   colors: {
     page: {
-      background: Palette.parchment,
-      backdrop: Palette.sand,
-      surface: Palette.ivory,
-      surfaceMuted: Palette.mist,
-      border: Palette.clay,
-      glowPrimary: Palette.glowTealSoft,
-      glowSecondary: Palette.glowEmberSoft,
-      cardShadow: Palette.shadowUmber,
-      insetHighlight: Palette.insetIvory
+      background: Palette.slate200,
+      backdrop: Palette.slate300,
+      surface: Palette.white,
+      surfaceMuted: Palette.slate50,
+      border: Palette.slate400,
+      glowPrimary: Palette.glowBlueSoft,
+      glowSecondary: Palette.glowTealSoft,
+      cardShadow: Palette.shadowCool,
+      insetHighlight: Palette.insetLight
     },
     text: {
-      primary: Palette.umber,
-      secondary: Palette.slate,
-      muted: Palette.steel,
-      accent: Palette.teal,
-      inverse: Palette.ivory
+      primary: Palette.slate900,
+      secondary: Palette.slate700,
+      muted: Palette.slate500,
+      accent: Palette.blue600,
+      inverse: Palette.white
     },
     accent: {
-      primary: Palette.teal,
-      secondary: Palette.ember,
-      danger: Palette.leatherDeep
+      primary: Palette.blue600,
+      secondary: Palette.teal500,
+      danger: Palette.red500
     },
     input: {
-      focusRing: Palette.focusTeal
+      focusRing: Palette.focusBlue
     },
     strap: {
-      leather: Palette.leather,
-      lining: Palette.teal,
-      stitch: Palette.ivory,
-      hole: Palette.umber,
-      stiffener: Palette.slate
+      leather: Palette.brown700,
+      lining: Palette.blue500,
+      stitch: Palette.slate50,
+      hole: Palette.slate900,
+      stiffener: Palette.slate300
     },
     svg: {
-      woodLight: Palette.clay,
-      woodMid: Palette.sand,
-      woodDark: Palette.leatherDeep,
-      guideBlue: Palette.sky,
-      guideRed: Palette.ember,
-      guideCyan: Palette.tealSoft,
-      grid: Palette.fog
+      woodLight: Palette.tan200,
+      woodMid: Palette.tan400,
+      woodDark: Palette.tan600,
+      guideBlue: Palette.blue600,
+      guideRed: Palette.red500,
+      guideCyan: Palette.teal500,
+      grid: Palette.slate200
     }
   }
 });

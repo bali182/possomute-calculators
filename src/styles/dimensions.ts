@@ -24,7 +24,9 @@ export const Dimensions = {
   tabsContainerPadding: "6px",
   tabsGap: "6px",
   tabPadding: "10px 18px",
+  tabWidth: "120px",
   tabRadius: "999px",
+  tabUnderline: "2px",
   splitPanelPadding: "20px",
   splitPanelGap: "18px"
 };

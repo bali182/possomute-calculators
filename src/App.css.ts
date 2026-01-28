@@ -11,7 +11,6 @@ export const app = style({
   flexDirection: "column",
   padding: Dimensions.pagePaddingWide,
   backgroundColor: ThemeContract.colors.page.background,
-  backgroundImage: `radial-gradient(${Dimensions.pageGlowPrimary} at 10% -10%, ${ThemeContract.colors.page.glowPrimary}, transparent 70%), radial-gradient(${Dimensions.pageGlowSecondary} at 90% 0%, ${ThemeContract.colors.page.glowSecondary}, transparent 65%)`,
   "@media": {
     [`screen and (max-width: ${Breakpoints.pageWide})`]: {
       padding: Dimensions.pagePaddingMedium
