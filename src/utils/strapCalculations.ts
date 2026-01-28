@@ -1,4 +1,4 @@
-import type { StrapData, StrapInputs, StrapSegment } from "../model/types";
+import type { StrapData, StrapInputs, StrapSegment, StrapSegmentInput } from "../model/types";
 
 export function calculateStrapData(inputs: StrapInputs): StrapData {
   const {
@@ -85,7 +85,7 @@ type BuildSegmentsInput = {
   cornerFat: number;
 };
 
-function buildSegments(input: BuildSegmentsInput): StrapSegment[] {
+function buildSegments(input: BuildSegmentsInput): StrapSegmentInput[] {
   const { boxHeight, boxLength, cornerStandard, cornerFat } = input;
 
   return [
@@ -126,7 +126,7 @@ function buildSegments(input: BuildSegmentsInput): StrapSegment[] {
   ];
 }
 
-function addSegmentPositions(segments: StrapSegment[]): StrapSegment[] {
+function addSegmentPositions(segments: StrapSegmentInput[]): StrapSegment[] {
   let currentX = 0;
   return segments.map((segment) => {
     const item = { ...segment, startX: currentX, endX: currentX + segment.len };

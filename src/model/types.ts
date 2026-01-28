@@ -1,4 +1,6 @@
-export type TranslationKey = string;
+import en from "../locales/en_EN.json";
+
+export type TranslationKey = keyof typeof en;
 
 export type StrapInputs = {
   thickness: number;
@@ -22,6 +24,8 @@ export type StrapSegment = {
   startX: number;
   endX: number;
 };
+
+export type StrapSegmentInput = Omit<StrapSegment, "startX" | "endX">;
 
 export type StrapHole = {
   x: number;

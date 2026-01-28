@@ -1,11 +1,12 @@
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { TranslationKey } from "../model/types";
 import * as styles from "./PlaceholderPanel.css";
 
 export type PlaceholderPanelProps = {
-  titleKey: string;
-  bodyKey: string;
+  titleKey: TranslationKey;
+  bodyKey: TranslationKey;
 };
 
 export const PlaceholderPanel: FC<PlaceholderPanelProps> = ({

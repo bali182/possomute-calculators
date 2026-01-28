@@ -2,10 +2,11 @@ import type { FC } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import type { TranslationKey } from "../model/types";
 import * as styles from "./MainTabs.css";
 
 type TabConfig = {
-  key: string;
+  key: TranslationKey;
   to: string;
 };
 
