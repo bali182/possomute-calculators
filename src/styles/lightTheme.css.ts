@@ -29,7 +29,6 @@ export const lightThemeClass = createTheme(ThemeContract, {
       danger: Palette.leatherDeep
     },
     input: {
-      shadow: Palette.shadowInkStrong,
       focusRing: Palette.focusTeal
     },
     strap: {

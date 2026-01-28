@@ -10,11 +10,11 @@ import { lightThemeClass } from "./styles/lightTheme.css";
 
 export const App: FC = () => {
   return (
-    <div className={lightThemeClass}>
-      <div className={styles.app}>
-        <BrowserRouter>
-          <div className={styles.layout}>
-            <MainTabs />
+    <div className={`${lightThemeClass} ${styles.app}`}>
+      <BrowserRouter>
+        <div className={styles.layout}>
+          <MainTabs />
+          <div className={styles.content}>
             <Routes>
               <Route path="/" element={<Navigate to="/strap" replace />} />
               <Route path="/strap" element={<StrapPage />} />
@@ -23,8 +23,8 @@ export const App: FC = () => {
               <Route path="*" element={<Navigate to="/strap" replace />} />
             </Routes>
           </div>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     </div>
   );
 };

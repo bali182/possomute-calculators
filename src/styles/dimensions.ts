@@ -1,5 +1,5 @@
 export const Dimensions = {
-  pageMaxWidth: "1320px",
+  pageMaxWidth: "100%",
   cardRadius: "20px",
   panelRadius: "16px",
   fieldRadius: "12px",
@@ -7,11 +7,12 @@ export const Dimensions = {
   borderThin: "1px",
   focusRing: "3px",
   sectionGap: "24px",
-  cardShadow: "0 24px 60px -40px",
-  inputShadow: "0 12px 22px -16px",
+  shadowPrimary: "0 24px 60px -40px",
   pageGlowPrimary: "900px 420px",
   pageGlowSecondary: "760px 360px",
-  pagePadding: "32px 24px 56px",
+  pagePaddingWide: "36px 160px 56px",
+  pagePaddingMedium: "32px 96px 56px",
+  pagePaddingNarrow: "24px 24px 40px",
   cardPadding: "28px",
   headerStackGap: "12px",
   totalBlockGap: "6px",
@@ -24,9 +25,6 @@ export const Dimensions = {
   tabsGap: "6px",
   tabPadding: "10px 18px",
   tabRadius: "999px",
-  tabShadow: "0 8px 18px -14px",
-  splitPanelHeight: "68vh",
   splitPanelPadding: "20px",
-  splitPanelGap: "18px",
-  splitBreakpoint: "900px"
+  splitPanelGap: "18px"
 };

@@ -64,7 +64,7 @@ export const StrapPage: FC = () => {
   const mmLabel = t("units.mm");
 
   return (
-    <main>
+    <main className={styles.page}>
       <section className={styles.panel}>
         <div className={styles.split}>
           <div className={styles.drawArea}>

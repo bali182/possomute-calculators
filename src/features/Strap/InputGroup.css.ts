@@ -32,7 +32,7 @@ export const input = style({
   border: `${Dimensions.borderThin} solid ${ThemeContract.colors.page.border}`,
   background: ThemeContract.colors.page.surface,
   color: ThemeContract.colors.text.primary,
-  boxShadow: `${Dimensions.inputShadow} ${ThemeContract.colors.input.shadow}`,
+  boxShadow: `${Dimensions.shadowPrimary} ${ThemeContract.colors.page.cardShadow}`,
   transition: "border-color 160ms ease, box-shadow 160ms ease",
   selectors: {
     "&:focus": {

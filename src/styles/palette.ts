@@ -20,7 +20,6 @@ export const Palette = {
   glowEmberSoft: "rgba(214, 106, 58, 0.16)",
   glowTealDusk: "rgba(116, 194, 199, 0.18)",
   glowEmberDusk: "rgba(242, 156, 120, 0.16)",
-  shadowInkStrong: "rgba(0, 0, 0, 0.35)",
   shadowInkSoft: "rgba(0, 0, 0, 0.25)",
   shadowUmber: "rgba(35, 23, 19, 0.35)",
   focusTeal: "rgba(29, 143, 151, 0.2)",

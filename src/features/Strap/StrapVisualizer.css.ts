@@ -8,7 +8,11 @@ export const frame = style({
   borderRadius: Dimensions.panelRadius,
   background: ThemeContract.colors.page.surface,
   boxShadow: `inset 0 0 0 ${Dimensions.borderThin} ${ThemeContract.colors.page.insetHighlight}`,
-  overflowX: "auto"
+  overflow: "auto",
+  height: "100%",
+  width: "100%",
+  flex: 1,
+  minHeight: 0
 });
 
 export const gridArea = style({

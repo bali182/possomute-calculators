@@ -7,9 +7,13 @@ globalStyle("*, *::before, *::after", {
   boxSizing: "border-box"
 });
 
+globalStyle("html, body", {
+  height: "100%"
+});
+
 globalStyle("body", {
   margin: 0,
-  minHeight: "100%",
+  height: "100%",
   backgroundColor: ThemeContract.colors.page.background,
   color: ThemeContract.colors.text.primary,
   fontFamily: Typography.body.fontFamily,
@@ -18,7 +22,7 @@ globalStyle("body", {
 });
 
 globalStyle("#root", {
-  minHeight: "100vh"
+  height: "100%"
 });
 
 globalStyle("button, input, select, textarea", {

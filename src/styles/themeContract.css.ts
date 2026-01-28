@@ -26,7 +26,6 @@ export const ThemeContract = createThemeContract({
       danger: null
     },
     input: {
-      shadow: null,
       focusRing: null
     },
     strap: {

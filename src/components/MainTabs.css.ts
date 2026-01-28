@@ -41,5 +41,5 @@ export const tabActive = style({
   color: ThemeContract.colors.text.primary,
   background: ThemeContract.colors.page.surface,
   borderColor: ThemeContract.colors.page.border,
-  boxShadow: `${Dimensions.tabShadow} ${ThemeContract.colors.page.cardShadow}`
+  boxShadow: `${Dimensions.shadowPrimary} ${ThemeContract.colors.page.cardShadow}`
 });

@@ -29,7 +29,6 @@ export const darkThemeClass = createTheme(ThemeContract, {
       danger: Palette.ember
     },
     input: {
-      shadow: Palette.shadowInkSoft,
       focusRing: Palette.focusTealSoft
     },
     strap: {
